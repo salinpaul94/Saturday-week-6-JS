@@ -561,7 +561,57 @@ function cartItemsList() {
 
         tableDiv.appendChild( tRow );
     })
+
+    document.querySelectorAll('.increase-item').forEach(item => {
+        item.addEventListener( 'click', incrementQty);
+    });
+
+    document.querySelectorAll('.decrease-item').forEach(item => {
+        item.addEventListener( 'click', decrementQty);
+    });
 };
+
+let currPrice = 0;
+function incrementQty() {
+    let itemsToInc = this.parentNode.previousSibling.innerText;
+    console.log(itemsToInc);
+
+    let incObj = cartItem.find(each => each.name == itemsToInc);
+    incObj.quantity += 1;
+    currPrice = (incObj.price * incObj.quantity - incObj.price * (incObj.quantity-1))/(incObj.quantity-1);
+    incObj.price = currPrice * incObj.quantity;
+
+    totalAmt();
+    cartItemsList();
+}
+
+let flag = false;
+function decrementQty() {
+
+    let itemsToDec = this.parentNode.previousSibling.innerText;
+    let decObj = cartItem.find(each => each.name == itemsToDec);
+    let ind = cartItem.indexOf(decObj);
+    if(decObj.quantity > 1){
+        currPrice = (decObj.price * decObj.quantity - decObj.price * (decObj.quantity-1))/(decObj.quantity);
+        decObj.quantity -= 1;
+        decObj.price = currPrice * decObj.quantity;
+    } else {
+        document.getElementById(decObj.id).classList.remove("toggle-heart");
+        cartItem.splice(ind, 1);
+        document.getElementById("cart-plus").innerText = ' ' + cartItem.length + ' Items';
+        if(cartItem.length < 1 && flag) {
+            document.getElementById('food-items').classList.toggle('food-items');
+            document.getElementById('category-list').classList.toggle('food-items');
+
+            document.getElementById('cart-page').classList.toggle('cart-toggle');
+            document.getElementById('checkout').classList.toggle('cart-toggle');
+            flag = false;
+            alert("currently no items in cart");
+        }
+    }
+    totalAmt();
+    cartItemsList();
+}
 
 function totalAmt() {
     let sum = 0;
@@ -574,7 +624,6 @@ function totalAmt() {
 }
 
 document.getElementById("cart-plus").addEventListener( 'click', cartToggle);
-let flag = false;
 function cartToggle() {
     if(cartItem.length > 0) {
         document.getElementById( "food-items" ).classList.toggle( 'food-items' );
