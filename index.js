@@ -514,5 +514,76 @@ function addItemInCart() {
         cartItem.push(itemObj);
     } else {
         alert("Item already added");
+        // document.getElementById(itemObj.id).classList.remove("toggle-heart");
     }
+    document.getElementById("cart-plus").innerText = ' ' + cartItem.length + ' Items ';
+    cartItemsList();
+    totalAmt();
 };
+
+function cartItemsList() {
+
+    let tableDiv = document.getElementById("table-body");
+    tableDiv.innerHTML = '';
+
+    cartItem.map(each => {
+        let tRow = document.createElement("tr");
+        let rowData1 = document.createElement("td");
+        let img = document.createElement("img");
+        img.src = each.img;
+        rowData1.appendChild(img);
+        
+        let rowData2 = document.createElement("td");
+        rowData2.innerText = each.name;
+
+        let rowData3 = document.createElement("td");
+        let btn1 = document.createElement('button');
+        btn1.setAttribute('class', 'decrease-item');
+        btn1.innerText = '-';
+        let span = document.createElement('span');
+        span.innerText = each.quantity;
+
+        let btn2 = document.createElement('button');
+        btn2.setAttribute('class', 'increase-item');
+        btn2.innerText = "+";
+
+        rowData3.appendChild( btn1 );
+        rowData3.appendChild(  span );
+        rowData3.appendChild( btn2 );
+
+        let rowData4 = document.createElement("td");
+        rowData4.innerText = each.price;
+
+        tRow.appendChild( rowData1);
+        tRow.appendChild( rowData2);
+        tRow.appendChild( rowData3);
+        tRow.appendChild( rowData4);
+
+        tableDiv.appendChild( tRow );
+    })
+};
+
+function totalAmt() {
+    let sum = 0;
+    cartItem.map(eachItem => {
+        sum = sum + eachItem.price;
+    });
+
+    document.getElementById('total-item').innerText = "Total Items : " + cartItem.length;
+    document.getElementById('total-price').innerText = "Total Price : $" + sum;
+}
+
+document.getElementById("cart-plus").addEventListener( 'click', cartToggle);
+let flag = false;
+function cartToggle() {
+    if(cartItem.length > 0) {
+        document.getElementById( "food-items" ).classList.toggle( 'food-items' );
+        document.getElementById( "category-list" ).classList.toggle( 'food-items' );
+
+        document.getElementById('cart-page').classList.toggle( 'cart-toggle' );
+        document.getElementById( 'checkout' ).classList.toggle( 'cart-toggle' );
+        flag = true;
+    } else {
+        alert( "no item in the cart ");
+    }
+}
