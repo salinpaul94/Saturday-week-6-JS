@@ -498,3 +498,21 @@ function selectTaste() {
 
 selectTaste();
 
+document.querySelectorAll('.add-to-cart').forEach(each => {
+    each.addEventListener( 'click', addItemInCart)
+});
+
+let cartItem = [];
+function addItemInCart() {
+    let itemToAdd = this.parentNode.nextSibling.nextSibling.innerText;
+    let itemObj = foodItem.find(each => each.name == itemToAdd);
+    // console.log(itemObj);
+    let ind = cartItem.indexOf(itemObj);
+    if(ind == -1) {
+        document.getElementById(itemObj.id).classList.add("toggle-heart");
+        // cartItem = [...cartItem, itemObj];
+        cartItem.push(itemObj);
+    } else {
+        alert("Item already added");
+    }
+};
