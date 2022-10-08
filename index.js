@@ -587,3 +587,14 @@ function cartToggle() {
         alert( "no item in the cart ");
     }
 }
+
+document.getElementById("add-address").addEventListener( 'click', addAddAddress );
+
+function addAddAddress() {
+    let add = prompt("Enter your address");
+    if(add) {
+        document.getElementById('add-address').innerText = ' ' + add
+    } else {
+        alert("Address not added");
+    }
+}
